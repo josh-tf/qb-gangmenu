@@ -97,11 +97,12 @@ end)
 -- Get Employees
 QBCore.Functions.CreateCallback('qb-gangmenu:server:GetEmployees', function(source, cb, gangname)
     local src = source
+
     local employees = {}
     if not Accounts[gangname] then
         Accounts[gangname] = 0
     end
-    local players = exports.oxmysql:executeSync("SELECT * FROM `players` WHERE `gang` LIKE '%".. gangname .."%'")
+    local players = exports.oxmysql:executeSync("SELECT * FROM `players` WHERE `gang` = ?", {gangname})
     if players[1] ~= nil then
         for key, value in pairs(players) do
             local isOnline = QBCore.Functions.GetPlayerByCitizenId(value.citizenid)
